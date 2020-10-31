@@ -30,7 +30,7 @@ Usage:
   g = tf.Graph()
 
   # Set up DeploymentConfig
-  config = model_deploy.DeploymentConfig(num_clones=3, clone_on_cpu=True)
+  config = model_deploy.DeploymentConfig(num_clones=2, clone_on_cpu=True)
 
   # Create the global step on the device storing the variables.
   with tf.device(config.variables_device()):
@@ -101,9 +101,8 @@ from __future__ import print_function
 
 import collections
 
-import tensorflow as tf
-
-slim = tf.contrib.slim
+import tensorflow.compat.v1 as tf
+import tf_slim as slim
 
 
 __all__ = ['create_clones',
@@ -594,7 +593,7 @@ class DeploymentConfig(object):
     if self._clone_on_cpu:
       device += '/device:CPU:0'
     else:
-      device += '/device:GPU:%d' % clone_index+3
+      device += '/device:GPU:%d' % clone_index
     return device
 
   def clone_scope(self, clone_index):
